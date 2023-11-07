@@ -164,11 +164,14 @@ components:
           type: string
         sex:
           $ref: "#/components/schemas/Authors"
-
     Sex:
       type: string
       enum:
         - M
         - F
+
+    crupdateBook:
+      allOf:
+        - $ref: "#/components/schemas/Book"
           
           
