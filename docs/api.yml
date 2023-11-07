@@ -8,6 +8,8 @@ servers:
 paths:
   /books:
     get:
+      tags:
+        - Books
       summary: Get all books
       description: The returned books are ordered by updated datetime.
       operationId: getBooks
@@ -32,8 +34,6 @@ paths:
           schema:
             type: string
             format: date
-
-        #TODO3: add parameter to filter books by intervals of dates of the releaseDate
       responses:
         200:
           description: The list of filtered books
@@ -44,6 +44,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Book'
     put:
+      tags:
+        - Books
       summary: Create or update a list of books
       operationId: crupdateBooks
       requestBody:
@@ -62,7 +64,79 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Book'
-  /authors:
+  /Authors:
+    get:
+      tags:
+        - Authors
+      summary: get list of Authors
+      operationId: get authorName
+      description: return list name of Authors
+      parameters:
+        - name: authorName
+          in: query
+          description: filtrer return Authors by given name
+          schema:
+            type: string
+          required: false
+      responses:
+        200:
+          description: the list of authors filtered
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Authors"
+    put:
+      tags:
+        - Authors
+      summary: create or update authors
+      operationId: crupdateAuthor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Authors"
+      responses:
+        200:
+          description: the list of create and update authors
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Authors"
+  /authors/{aId}:
+    delete:
+      tags:
+        - Authors
+      summary: delete author
+      operationId: deleteAuthor
+      parameters:
+        - name: aId
+          in: path
+          description: id of authors to be delete
+          schema:
+            type: string
+          required: true
+              
+
+            
+      responses:
+        200:
+          description: delete of authors is succes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Authors"
+
+
+
+
+    
   #TODO2: complete GET (can be filtered by name) - PUT - DELETE
 components:
   schemas:
@@ -75,6 +149,8 @@ components:
           type: string
         pageNumbers:
           type: integer
+        author: 
+          $ref: "#/components/schemas/Authors"
         topic:
           type: string
           enum:
@@ -93,10 +169,12 @@ components:
         name:
           type: string
         sex:
-          type: string
-          enum:
-            - M
-            - F
+          $ref: "#/components/schemas/Authors"
+
+    Sex:
+      type: string
+      enum:
+        - M
+        - F
           
-          #TODO1: set it as a component with properties : id, name, sex (M or F)
           
