@@ -132,12 +132,40 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Authors"
+
+  /books/{bookId}/authors/{authorId}:
+    put:
+      summary: update author of one books
+      description: |
+        return update of author and books by bookId and authorId
+      parameters:
+        - in: path
+          name: bookId
+          required: true
+          schema: 
+            type: string
+        - in: path
+          name: authorId
+          required: true
+          schema: 
+            type: string
+      responses:
+        200:
+          description: update book with author succesfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
 components:
   schemas:
     Book:
       type: object
+      discriminator:
+        propertyName: BookID
       properties:
-        id:
+        BookID:
           type: string
         bookName:
           type: string
