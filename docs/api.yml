@@ -284,6 +284,28 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/topic"
+  /authorTopic:
+    get:
+      tags:
+        - "authorTopic"
+      summary: get list authorstopic 
+      operationId: get topicName
+      description: return list of authortopic
+      parameters:
+        - in: query
+          name: authortopicName
+          required: false
+          schema: 
+            type: string
+      responses:
+        200:
+          description: list of authortopic
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/authorTopic"
 
 
 components:
@@ -343,5 +365,14 @@ components:
           type: string
         topicName:
           type: string
-          
-          
+
+    authorTopic:
+      description: representation author topic
+      allOf:
+        - $ref: "#/components/schemas/Authors"
+      properties:
+        topicName: 
+          type: string
+
+
+     
