@@ -147,10 +147,7 @@ paths:
           description: id of authors to be delete
           schema:
             type: string
-          required: true
-              
-
-            
+          required: true     
       responses:
         200:
           description: delete of authors is succes
@@ -209,6 +206,72 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/updateBookAuthor"
+  /Topic:
+    get:
+      tags:
+        - "topic"
+      summary: get list topic 
+      operationId: get topicName
+      description: return list of topic
+      parameters:
+        - in: query
+          name: topicName
+          required: false
+          schema: 
+            type: string
+      responses:
+        200:
+          description: list of topic
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/topic"
+    put:
+      tags:
+        - "topic"
+      summary: update list of topic
+      operationId: updateTopic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/topic"
+      responses:
+        200:
+          description: the list of  update topic
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/topic"
+  /topic/{TopicId}:
+    delete:
+      tags:
+        - topic
+      summary: delete topic
+      operationId: topicAuthor
+      parameters:
+        - name: TopicId
+          in: path
+          description: id of topic to be delete
+          schema:
+            type: string
+          required: true     
+      responses:
+        200:
+          description: delete of topic is succes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/topic"
+
+
 components:
   schemas:
     Book:
@@ -258,6 +321,13 @@ components:
         bookId:
           type: string
         authorId:
+          type: string
+    topic:
+      type: object
+      properties:
+        id:
+          type: string
+        topicName:
           type: string
           
           
