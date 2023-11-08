@@ -92,6 +92,20 @@ paths:
           schema:
             type: string
           required: false
+        - name: page
+          in: path
+          description: page number for pagination
+          required: true
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: path
+          description: number of items page
+          required: true
+          schema:
+            type: integer
+            default: 50
       responses:
         200:
           description: the list of authors filtered
