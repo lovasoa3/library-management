@@ -158,6 +158,29 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Book"
+  /books/author:
+    put:
+      tags:
+        - "updateBookAuthors"
+      summary: update relation of book and author
+      requestBody:
+        description: list object updateBookAuthor
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: array
+              items:
+                $ref: "#/components/schemas/updateBookAuthor"
+      responses:
+        200:
+          description: update of relation beetwin books and author succesfully
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: "#/components/schemas/updateBookAuthor"
 components:
   schemas:
     Book:
@@ -199,7 +222,16 @@ components:
         - F
 
     crupdateBook:
+      description: representation of book
       allOf:
         - $ref: "#/components/schemas/Book"
+    
+    updateBookAuthor:
+      type: object
+      properties:
+        bookId:
+          type: string
+        authorId:
+          type: string
           
           
