@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.0.0
+  version: 1.0.1
   description: STD22001
 servers:
   - url: https://library.com
@@ -218,11 +218,6 @@ components:
       properties:
         Authors: 
           $ref: "#/components/schemas/Authors"
-
-        
-                  
-        
-
     Authors:
       type: object
       properties:
