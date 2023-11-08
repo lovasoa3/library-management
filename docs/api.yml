@@ -212,27 +212,16 @@ paths:
 components:
   schemas:
     Book:
-      type: object
-      discriminator:
-        propertyName: BookID
+      description: representation book with author
+      allOf:
+        - $ref: "#/components/schemas/crupdateBook"
       properties:
-        BookID:
-          type: string
-        bookName:
-          type: string
-        pageNumbers:
-          type: integer
-        author: 
+        Authors: 
           $ref: "#/components/schemas/Authors"
-        topic:
-          type: string
-          enum:
-            - ROMANCE
-            - COMEDY
-            - OTHER
-        releaseDate:
-          type: string
-          format: date
+
+        
+                  
+        
 
     Authors:
       type: object
@@ -251,8 +240,22 @@ components:
 
     crupdateBook:
       description: representation of book
-      allOf:
-        - $ref: "#/components/schemas/Book"
+      properties:
+        BookID:
+          type: string
+        bookName:
+          type: string
+        pageNumbers:
+          type: integer
+        topic:
+          type: string
+          enum:
+            - ROMANCE
+            - COMEDY
+            - OTHER
+        releaseDate:
+          type: string
+          format: date
     
     updateBookAuthor:
       type: object
