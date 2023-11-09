@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Library API
   version: 1.1.0
-  description: STD22001
+  description: STD22097
 servers:
   - url: https://library.com
 paths:
@@ -264,6 +264,27 @@ components:
       properties:
         topicName: 
           type: string
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: object
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
+        body:
+          type: object 
+
+    ApiResponse200:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponse"
+        - type: object
+          properties:
+            schema:
+              type: string
+
     
   parameters:
     queryPagination:
@@ -292,7 +313,14 @@ components:
           pageSize:
             type: integer
             default: 50
-      
+
+  responses:
+    200:
+      description: Success
+      content:
+        application/json:
+        schema:
+          $ref: "#/components/schemas/ApiResponse200"
 
 
 
