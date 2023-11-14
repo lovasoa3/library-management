@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.1.0
+  version: 1.2.0
   description: STD22097
 servers:
   - url: https://library.com
@@ -34,17 +34,14 @@ paths:
           schema:
             type: string
             format: date
-        - $ref: "#/components/parameters/queryPagination"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/pageSize"
         - $ref: "#/components/parameters/pathPagination"
       responses:
         200:
-          description: The list of filtered books
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Book'
+          $ref: "#/components/schemas/bookListBody"
+        400:
+          $ref: "#/components/schemas/BadRequestBody"
     put:
       tags:
         - Books
@@ -59,13 +56,9 @@ paths:
                 $ref: '#/components/schemas/Book'
       responses:
         200:
-          description: The list of created or updated books
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Book'
+          $ref: "#/components/schemas/bookListBody"
+        400:
+          $ref: "#/components/schemas/BadRequestBody"
   /Authors:
     get:
       tags:
@@ -80,7 +73,8 @@ paths:
           schema:
             type: string
           required: false
-        - $ref: "#/components/parameters/queryPagination"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/pageSize"
         - $ref: "#/components/parameters/pathPagination"
       responses:
         200:
@@ -152,13 +146,9 @@ paths:
             type: string
       responses:
         200:
-          description: update book with author succesfully
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Book"
+          $ref: "#/components/schemas/bookListBody"
+        400:
+          $ref: "#/components/schemas/BadRequestBody"
   /books/author:
     put:
       tags:
@@ -207,7 +197,52 @@ paths:
                   $ref: "#/components/schemas/authorTopic"
 
 components:
+  responses:
+    Booklist_200:
+      description: list if book
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/bookListBody"
+    400:
+      description: BAD REQUEST
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BadRequestBody"       
   schemas:
+    responseStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 200
+        message:
+          type: string
+    ResponseBodyTemplate:
+      type: object
+      properties:
+        status: 
+          $ref: "#/components/schemas/responseStatus"
+        body: 
+          type: object
+    bookListBody:
+      allOf:
+        - $ref: "#/components/schemas/ResponseBodyTemplate"
+        - properties:
+            body:
+              type: array
+              items:
+                 $ref: "#/components/schemas/Book"
+    BadRequestBody:
+      allOf:  
+      $ref: "#/components/schemas/ResponseBodyTemplate"
+      example:
+        status:
+          code: 400
+          message:  BAD REQUEST 
+        body: { }
+
     Book:
       description: representation book with author
       allOf:
@@ -256,50 +291,53 @@ components:
         authorId:
           type: string
   
-
     authorTopic:
       description: representation author topic
       allOf:
         - $ref: "#/components/schemas/Authors"
       properties:
         topicName: 
-          type: string
-    ApiResponse:
+          type: string 
+
+    visiteur:
       type: object
       properties:
-        status:
-          type: object
-          properties:
-            code:
-              type: integer
-            message:
-              type: string
-        body:
-          type: object 
+        ID: 
+          type: string
+        name: 
+          type: string
+        reference:
+          type: string 
+    actionVisituer:
+      type: object
+      properties:
+        choixPossible:
+          enum:
+            - emprunter
+            - rendu
+        id_Book:
+          type: string
+        visiteur:
+          $ref: "#/components/schemas/visiteur"
 
-    ApiResponse200:
-      allOf:
-        - $ref: "#/components/schemas/ApiResponse"
-        - type: object
-          properties:
-            schema:
-              type: string
+         
 
-    
+
   parameters:
-    queryPagination:
-      name: queryPagination
-      in: query
-      required: false
-      schema: 
-        type: object
-        properties:
-          page: 
-            type: integer
-            default: 1
-          pageSize:
-            type: integer
-            default: 50
+    page:
+        in: query
+        name: page
+        schema:
+          type: integer
+          default:  1
+        required: false
+    pageSize:
+        in: query
+        name: pagesize
+        schema:
+          type: integer
+          default:  50
+
     pathPagination:
       name: pathPagination
       in: path
@@ -313,15 +351,9 @@ components:
           pageSize:
             type: integer
             default: 50
+  
+    
 
-  responses:
-    200:
-      description: Success
-      content:
-        application/json:
-        schema:
-          $ref: "#/components/schemas/ApiResponse200"
-
-
+ 
 
      
