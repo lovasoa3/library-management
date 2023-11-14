@@ -34,14 +34,14 @@ paths:
           schema:
             type: string
             format: date
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/pathPagination"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pathPagination'
       responses:
         200:
-          $ref: "#/components/schemas/bookListBody"
+          $ref: '#/components/schemas/bookListBody'
         400:
-          $ref: "#/components/schemas/BadRequestBody"
+          $ref: '#/components/schemas/BadRequestBody'
     put:
       tags:
         - Books
@@ -56,9 +56,9 @@ paths:
                 $ref: '#/components/schemas/Book'
       responses:
         200:
-          $ref: "#/components/schemas/bookListBody"
+          $ref: '#/components/schemas/bookListBody'
         400:
-          $ref: "#/components/schemas/BadRequestBody"
+          $ref: '#/components/schemas/BadRequestBody'
   /Authors:
     get:
       tags:
@@ -73,9 +73,9 @@ paths:
           schema:
             type: string
           required: false
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/pathPagination"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/pathPagination'
       responses:
         200:
           description: the list of authors filtered
@@ -84,7 +84,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Authors"
+                  $ref: '#/components/schemas/Authors'
     put:
       tags:
         - Authors
@@ -96,7 +96,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/Authors"
+                $ref: '#/components/schemas/Authors'
       responses:
         200:
           description: the list of create and update authors
@@ -104,7 +104,7 @@ paths:
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/Authors"
+                  $ref: '#/components/schemas/Authors'
   /authors/{aId}:
     delete:
       tags:
@@ -126,7 +126,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Authors"
+                  $ref: '#/components/schemas/Authors'
 
   /books/{bookId}/authors/{authorId}:
     put:
@@ -146,13 +146,13 @@ paths:
             type: string
       responses:
         200:
-          $ref: "#/components/schemas/bookListBody"
+          $ref: '#/components/schemas/bookListBody'
         400:
-          $ref: "#/components/schemas/BadRequestBody"
+          $ref: '#/components/schemas/BadRequestBody'
   /books/author:
     put:
       tags:
-        - "updateBookAuthors"
+        - 'updateBookAuthors'
       summary: update relation of book and author
       requestBody:
         description: list object updateBookAuthor
@@ -162,7 +162,7 @@ paths:
             schema: 
               type: array
               items:
-                $ref: "#/components/schemas/updateBookAuthor"
+                $ref: '#/components/schemas/updateBookAuthor'
       responses:
         200:
           description: update of relation beetwin books and author succesfully
@@ -171,12 +171,12 @@ paths:
               schema: 
                 type: array
                 items:
-                  $ref: "#/components/schemas/updateBookAuthor"
+                  $ref: '#/components/schemas/updateBookAuthor'
                    
   /authorTopic:
     get:
       tags:
-        - "authorTopic"
+        - 'authorTopic'
       summary: get list authorstopic 
       operationId: get topicName
       description: return list of authortopic
@@ -194,7 +194,54 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/authorTopic"
+                  $ref: '#/components/schemas/authorTopic'
+  /visiteurs:
+    get:
+      tags:
+        - 'visiteur'
+      summary: get all visiteur
+      operationId: get visiteur
+      description: return list of visiteur
+      parameters:
+        - in: query
+          name: visiteur
+          required: false
+          schema: 
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/listVisiteur'
+        400:
+          $ref: '#/components/schemas/BadRequestBody'
+  /book/emprenter:
+    get:
+      tags:
+        - 'bibliot'
+      summary: get all book emprunter
+      operationId: get book emprunter
+      description: return book emprunter
+      parameters:
+        - $ref: '#/components/parameters/emprunter'
+      responses:
+        200:
+          $ref: '#/components/responses/Booklist_200'
+        400:
+          $ref: '#/components/responses/400'
+  /book/rendu:
+    get:
+      tags:
+        - 'bibliot'
+      summary: get all book rendu
+      operationId: get book rendu
+      description: return book rendu
+      parameters:
+        - $ref: '#/components/parameters/rendu'
+      responses:
+        200:
+          $ref: '#/components/responses/Booklist_200'
+        400:
+          $ref: '#/components/responses/400'
+
 
 components:
   responses:
@@ -203,13 +250,19 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/bookListBody"
+            $ref: '#/components/schemas/bookListBody'
+    listVisiteur:
+      description: list visiteur
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/responses/listVisiteur'
     400:
       description: BAD REQUEST
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/BadRequestBody"       
+            $ref: '#/components/schemas/BadRequestBody'       
   schemas:
     responseStatus:
       type: object
@@ -223,20 +276,29 @@ components:
       type: object
       properties:
         status: 
-          $ref: "#/components/schemas/responseStatus"
+          $ref: '#/components/schemas/responseStatus'
         body: 
           type: object
     bookListBody:
       allOf:
-        - $ref: "#/components/schemas/ResponseBodyTemplate"
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
         - properties:
             body:
               type: array
               items:
-                 $ref: "#/components/schemas/Book"
+                 $ref: '#/components/schemas/Book'
+    visiteurList:
+      allOf:
+        - $ref: '#/components/schemas/bookListBody'
+        - properties:
+            body: 
+              type: array
+              items:
+                $ref: '#/components/schemas/visiteur'
+                 
     BadRequestBody:
       allOf:  
-      $ref: "#/components/schemas/ResponseBodyTemplate"
+      $ref: '#/components/schemas/ResponseBodyTemplate'
       example:
         status:
           code: 400
@@ -246,10 +308,10 @@ components:
     Book:
       description: representation book with author
       allOf:
-        - $ref: "#/components/schemas/crupdateBook"
+        - $ref: '#/components/schemas/crupdateBook'
       properties:
         Authors: 
-          $ref: "#/components/schemas/Authors"
+          $ref: '#/components/schemas/Authors'
     Authors:
       type: object
       properties:
@@ -258,7 +320,7 @@ components:
         name:
           type: string
         sex:
-          $ref: "#/components/schemas/Authors"
+          $ref: '#/components/schemas/Authors'
     Sex:
       type: string
       enum:
@@ -282,6 +344,12 @@ components:
         releaseDate:
           type: string
           format: date
+        activityBook:
+          type: string
+          enum:
+            - emprunter
+            - rendu
+        
     
     updateBookAuthor:
       type: object
@@ -294,10 +362,11 @@ components:
     authorTopic:
       description: representation author topic
       allOf:
-        - $ref: "#/components/schemas/Authors"
+        - $ref: '#/components/schemas/Authors'
       properties:
         topicName: 
-          type: string 
+          type: string
+
 
     visiteur:
       type: object
@@ -318,10 +387,10 @@ components:
         id_Book:
           type: string
         visiteur:
-          $ref: "#/components/schemas/visiteur"
+          $ref: '#/components/schemas/visiteur'
+        
 
          
-
 
   parameters:
     page:
@@ -351,6 +420,19 @@ components:
           pageSize:
             type: integer
             default: 50
+    emprunter:
+      in: query
+      name: emprunter
+      schema: 
+        type: string
+        default: emprunter
+
+    rendu:
+      in: query
+      name: rendu
+      schema: 
+        type: string
+        default: rendu
   
     
 
